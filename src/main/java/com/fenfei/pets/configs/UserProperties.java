@@ -11,6 +11,7 @@ public class UserProperties {
     private String password;
     private String info;
     private String profile;
+    private String env;
 
 
     public String getProfile() {
@@ -43,5 +44,13 @@ public class UserProperties {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
     }
 }

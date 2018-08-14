@@ -42,4 +42,33 @@ public class PetsApplicationTests {
 		System.out.println(result);
 	}
 
+
+//	@Test
+//	public void testJson() {
+//		String json = "{\n" +
+//				"  \"labelId\" : 1,\n" +
+//				"  \"memberIds\" : [1,2,3,4,5,6,7]\n" +
+//				"}\n" +
+//				"\n";
+//		try {
+//			JSONObject jsonObject = new JSONObject(json);
+//			//标签id
+//			Integer labelId = jsonObject.optInt("labelId");
+//			JSONArray array = jsonObject.optJSONArray("memberIds");
+//			List<Memeber> members = new ArrayList<>();
+//			for (int i=0; i< array.length() ; i++) {
+//				//会员id
+//				long memberId = array.getLong(i);
+//				Member member = memberService.getUserById(memberId);
+//				member.setLabelId(labelId);
+//				((ArrayList) members).add(member);
+//			}
+//
+//			memberService.updateBatch(members);
+//
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//	}
+
 }

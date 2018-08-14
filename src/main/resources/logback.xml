@@ -4,10 +4,18 @@
     <!--<property name="USER_HOME" value="/Users/shefenfei/Documents/web_workspace/pets/logs"/>-->
     <property resource="application.properties"/>
 
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 一个layout -->
+        <!--<layout class="ch.qos.logback.classic.layout.TTLLLayout"></layout>-->
+
+        <!-- 0个或多个encoder -->
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] - %5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] - %5level %logger{36} - %msg%n</pattern>
         </encoder>
+
+        <!-- 0个或多个filter -->
+        <!--<filter class="ch.qos.logback.core.filter.EvaluatorFilter"></filter>-->
     </appender>
 
     <!--<appender name="FILE" class="ch.qos.logback.core.FileAppender">-->
@@ -35,10 +43,22 @@
         </triggeringPolicy>
     </appender>
 
+    <!--可以加在具体的包上 ，具体的类上，有继承关系-->
+    <logger name="com.fenfei.pets.controller" level="INFO">
+        <!--这样会导致日志重复输出两次-->
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!--如果 additivity="false" 那么标识 只将日志打入文件-->
+    <logger name="com.fenfei.pets.controller.TestController" level="INFO" additivity="false">
+        <!--这个类中的消息会进入日志文件-->
+        <appender-ref ref="FILE"/>
+    </logger>
+
     <!--最多一个 root-->
-    <root level="debug">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <!--<appender-ref ref="FILE"/>-->
-        <appender-ref ref="FILE"/>
+        <!--<appender-ref ref="FILE"/>-->
     </root>
 </configuration>

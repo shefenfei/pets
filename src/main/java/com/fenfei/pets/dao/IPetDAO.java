@@ -1,5 +1,10 @@
 package com.fenfei.pets.dao;
 
-public interface IPetDAO {
+import com.fenfei.pets.models.Book;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
+public interface IPetDAO {
+    Book selectBookById(int bookId);
 }
