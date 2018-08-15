@@ -29,3 +29,5 @@ nbdist/
 
 /logs
 pets-*.log
+
+/data/
