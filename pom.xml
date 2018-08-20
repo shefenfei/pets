@@ -156,6 +156,36 @@
             <version>1.3.1</version>
         </dependency>
 
+        <!--drools 引入drools 规则引擎-->
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>7.0.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+            <version>7.0.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-decisiontables</artifactId>
+            <version>7.0.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-templates</artifactId>
+            <version>7.0.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+            <version>7.0.0.Final</version>
+        </dependency>
+
+        <!---->
+
     </dependencies>
 
     <build>
@@ -171,12 +201,26 @@
             </resource>
         </resources>
 
-        <!--
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!--其中比较需要注意的是使用了exec-maven-plugin插件，不然无法启动-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>com.fenfei.pets.PetsApplication</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!--
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>

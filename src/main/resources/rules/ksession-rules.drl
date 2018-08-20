@@ -1,0 +1,48 @@
+package com.fenfei.pets
+import com.fenfei.pets.models.DroolsMessage
+
+dialect "mvel"
+
+rule "HelloWorld"
+    dialect "mvel"
+    when
+        m : DroolsMessage(status.equals(DroolsMessage.HELLO) , message : message)
+    then
+        System.out.println(message);
+    modify(m){
+        message = "Good Bye cruel world" , status = DroolsMessage.GOODBYE
+    }
+end
+
+rule "GoodBye"
+    dialect "java"
+    when
+        m: DroolsMessage(status.equals(DroolsMessage.GOODBYE) , message : message)
+    then
+        System.out.println(message);
+end
+
+
+rule "rule3"
+    no-loop true
+    //规则过期时间
+    date-expires "2018-08-31 23:59:59"
+    //生效时间
+    date-effective "2018-08-01 23:59:59"
+    //规则定时，duration 3000   3秒后执行规则
+    duration 3000
+    //优先级，数值越大越先执行，这个可以控制规则的执行顺序。
+    salience 2
+
+    when
+        $message: DroolsMessage(status ==  1)
+    then
+        System.out.println("fit");
+        test();
+        $message.setStatus(1);
+        update($message)
+end
+
+function void test() {
+    System.out.println("hello");
+}
