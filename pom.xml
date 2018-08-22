@@ -184,7 +184,11 @@
             <version>7.0.0.Final</version>
         </dependency>
 
-        <!---->
+        <!--GSON-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
 
     </dependencies>
 

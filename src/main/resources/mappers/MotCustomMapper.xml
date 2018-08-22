@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fenfei.pets.dao.IMotDAO">
+
+    <select id="queryTemplateByEventId"
+            resultType="com.fenfei.pets.models.CustomTemplate"
+            parameterType="java.lang.Integer">
+        select t.id, t.content from tb_custom_template t
+            left join tb_business_template b
+              on t.id = b.template_id
+                where event_id = #{id};
+    </select>
+
+</mapper>

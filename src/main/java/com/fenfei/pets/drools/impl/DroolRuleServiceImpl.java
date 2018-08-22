@@ -1,7 +1,15 @@
 package com.fenfei.pets.drools.impl;
 
+import com.fenfei.pets.dao.IMotDAO;
 import com.fenfei.pets.drools.DroolRuleService;
+import com.fenfei.pets.models.CustomTemplate;
 import com.fenfei.pets.models.DroolsMessage;
+import com.fenfei.pets.models.DroolsRule;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
 import org.kie.api.io.ResourceType;
 import org.kie.internal.KnowledgeBase;
 import org.kie.internal.KnowledgeBaseFactory;
@@ -11,14 +19,21 @@ import org.kie.internal.builder.KnowledgeBuilderErrors;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class DroolRuleServiceImpl implements DroolRuleService {
+
+    @Autowired
+    private IMotDAO motDAO;
 
     @Override
     public String findRule(String message, Integer status) {
@@ -39,17 +54,51 @@ public class DroolRuleServiceImpl implements DroolRuleService {
 
         //==================动态过滤规则========================
         String ruleName = "rule_dynamtic";
-        String[] conditions = {"$message:DroolsMessage(status.equals(DroolsMessage.HELLO) , message : message)"};
+        String[] conditions = {
+                "$message:DroolsMessage(status.equals(DroolsMessage.HELLO) , message : message)"
+                , "DroolsMessage(startDate > '2018-08-21' && endDate < '2018-08-25')"
+        };
         String rule = parseRuleStr(ruleName , Arrays.asList(conditions));
         System.out.println(rule);
 
         DroolsMessage droolsMessage1 = new DroolsMessage();
         droolsMessage1.setStatus(0);
         droolsMessage1.setMessage("HelloWorld");
+        droolsMessage1.setStartDate(new Date());
+        droolsMessage1.setEndDate(new Date());
         buildRules(rule , droolsMessage1);
 
 //        return droolsMessage.getMessage();
         return "";
+    }
+
+    @Override
+    public CustomTemplate queryById(int id) {
+        //这行代码至关重要
+        System.setProperty("drools.dateformat", "yyyy-MM-dd HH:mm:ss");
+        ArrayList<String> conditions = new ArrayList<>();
+
+        CustomTemplate customTemplate = motDAO.queryTemplateByEventId(id);
+        String content = customTemplate.getContent();
+        JsonParser jsonParser = new JsonParser();
+        JsonArray array = jsonParser.parse(content).getAsJsonArray();
+        for (JsonElement element : array) {
+            String json = element.getAsJsonObject().toString();
+            DroolsRule droolsRule = new Gson().fromJson(json , DroolsRule.class);
+            conditions.add(droolsRule.getRule());
+            log.info("droolsRule: {}" , droolsRule);
+        }
+
+        String rule = parseRuleStr("dynamtic" , conditions);
+        System.out.println(rule);
+        DroolsMessage droolsMessage1 = new DroolsMessage();
+        droolsMessage1.setStatus(0);
+        droolsMessage1.setMessage("HelloWorld");
+        droolsMessage1.setStartDate(new Date());
+        droolsMessage1.setEndDate(new Date());
+        buildRules(rule , droolsMessage1);
+
+        return customTemplate;
     }
 
 
@@ -60,7 +109,6 @@ public class DroolRuleServiceImpl implements DroolRuleService {
         StatefulKnowledgeSession knowledgeSession = null;
         try {
             knowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule.getBytes("utf-8")), ResourceType.DRL);
-//            knowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule2.getBytes("utf-8")), ResourceType.DRL);
 
             KnowledgeBuilderErrors errors = knowledgeBuilder.getErrors();
             for (KnowledgeBuilderError error : errors) {
@@ -96,7 +144,7 @@ public class DroolRuleServiceImpl implements DroolRuleService {
         }
         String condition = cds.toString();
         String result = "\t then \r\n";
-        String execution = "\t\t  System.out.println(message);\n";
+        String execution = "\t\t  System.out.println('hello');\n";
         String end = "end\r\n";
 
         ruleBuilders.append(packageName)
