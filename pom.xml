@@ -190,6 +190,13 @@
             <artifactId>gson</artifactId>
         </dependency>
 
+        <!--动态定时任务调度-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
