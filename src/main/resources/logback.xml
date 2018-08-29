@@ -49,7 +49,7 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <!--如果 additivity="false" 那么标识 只将日志打入文件-->
+    <!--如果 additivity="false" 那么标识 只将日志打入文件 不叠加-->
     <logger name="com.fenfei.pets.controller.TestController" level="INFO" additivity="false">
         <!--这个类中的消息会进入日志文件-->
         <appender-ref ref="FILE"/>

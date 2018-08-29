@@ -5,6 +5,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class DemoTest {
 
@@ -38,6 +41,20 @@ public class DemoTest {
 
     @Test
     public void testDrools() {
+        ConcurrentLinkedDeque<String> linkedDeque = new ConcurrentLinkedDeque<>();
+        linkedDeque.add("a");
+        linkedDeque.offer("b");
+        linkedDeque.offer("c");
+        linkedDeque.offer("d");
+        linkedDeque.offer("e");
 
+        System.out.println(linkedDeque.size());
+        linkedDeque.poll();
+        System.out.println(linkedDeque.size());
+        linkedDeque.peek();
+        System.out.println(linkedDeque.size());
+
+        LinkedBlockingQueue linkedBlockingQueue = new LinkedBlockingQueue();
+        ArrayBlockingQueue arrayBlockingQueue = new ArrayBlockingQueue(1000);
     }
 }

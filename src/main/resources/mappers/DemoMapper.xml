@@ -6,4 +6,12 @@
         select * from books where bookid = #{bookId};
     </select>
 
+    <insert id="demo" parameterType="com.fenfei.pets.models.Book">
+        insert into tb_dept(id, name)
+        values
+        <foreach collection="list" index="index" separator="," open="(" close=")" item="book">
+          #{bookname} , #{id}
+        </foreach>
+    </insert>
+
 </mapper>
